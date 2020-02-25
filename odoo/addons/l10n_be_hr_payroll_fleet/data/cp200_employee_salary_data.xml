@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="l10n_be_hr_payroll.cp200_employees_salary_company_car" model="hr.salary.rule">
+            <field name="condition_python">result = bool(contract.transport_mode_car and (payslip.dict.vehicle_id or contract.car_id)._get_car_atn(date=payslip.dict.date_from))</field>
+            <field name="amount_python_compute">result = (payslip.dict.vehicle_id or contract.car_id)._get_car_atn(date=payslip.dict.date_from)</field>
+        </record>
+        <record id="l10n_be_hr_payroll.cp200_employees_salary_company_car_2" model="hr.salary.rule">
+            <field name="condition_python">result = bool(contract.transport_mode_car and (payslip.dict.vehicle_id or contract.car_id)._get_car_atn(date=payslip.dict.date_from))</field>
+            <field name="amount_python_compute">result = -(payslip.dict.vehicle_id or contract.car_id)._get_car_atn(date=payslip.dict.date_from)</field>
+        </record>
+    </data>
+</odoo>

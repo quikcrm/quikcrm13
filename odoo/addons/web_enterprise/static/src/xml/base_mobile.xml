@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<t t-name="StatusbarButtons">
+    <div class="o_statusbar_buttons">
+        <div class="btn-group">
+            <a role="button" class="btn btn-primary dropdown-toggle" href="#"
+                data-toggle="dropdown" aria-expanded="false">Action</a>
+            <div class="dropdown-menu" role="menu"/>
+        </div>
+    </div>
+</t>
+
+<t t-name="FieldStatus.content.mobile">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <t t-if="status" t-esc="status.display_name"/>
+    </button>
+    <div class="dropdown-menu" role="menu">
+        <t t-foreach="selection" t-as="i">
+            <t t-call="FieldStatus.content.button">
+                <t t-set="is_dropdown" t-value="true"/>
+            </t>
+        </t>
+    </div>
+</t>
+
+<t t-name="BurgerMenu">
+    <div class="o_burger_menu o_in_home_menu">
+        <div class="o_burger_menu_topbar">
+            <span class="dropdown-toggle">
+                <img class="rounded-circle o_burger_menu_avatar" t-att-src="'/web/image?model=res.users&amp;field=image_128&amp;id=' + session.uid" alt="Menu"/>
+                <span class="o_burger_menu_username"><t t-esc="session.name"/></span>
+            </span>
+            <span class="fa fa-close o_burger_menu_close float-right" role="img" aria-label="Close menu" title="Close menu"/>
+        </div>
+        <div class="o_burger_menu_content o_burger_menu_dark">
+            <div class="o_burger_menu_user">
+                <div t-if="session.user_companies" class="o_burger_menu_companies">
+                    <div class="o_burger_menu_user_title">COMPANIES</div>
+                    <t t-foreach="session.user_companies.allowed_companies" t-as="company">
+                        <div t-attf-class="o_burger_menu_company #{session.user_companies.current_company[0] == company[0] ? 'active' : ''}" t-att-data-id="company[0]">
+                            <span class="fa fa-building-o o_burger_menu_company_icon" title="Company menu" role="img" aria-label="Company menu"/>
+                            <t t-esc="company[1]"/>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <div class="o_burger_menu_app"/>
+        </div>
+    </div>
+</t>
+
+<t t-name="Menu.sections.mobile">
+    <t t-set="mobile" t-value="true"/>
+    <t t-set="inNavbar" t-value="true"/>
+    <t t-foreach="menu_data.children" t-as="primary_menu">
+        <section t-att-class="primary_menu.id">
+            <t t-if="primary_menu.children.length">
+                <t t-foreach="primary_menu.children" t-as="submenu">
+                    <t t-set="menu" t-value="submenu"/>
+                    <t t-call="Menu.link"/>
+                </t>
+            </t>
+        </section>
+    </t>
+</t>
+
+<t t-name="SearchPanel.SummaryMobile">
+    <t t-set="emptySelection" t-value="!categories.length &amp; !filters.length"/>
+    <summary>
+        <div class="d-flex align-items-center h-100">
+            <i class="o_search_panel_mobile_close fa fa-fw fa-arrow-left"/>
+            <i class="o_search_panel_mobile_collapsed_only fa fa-fw fa-filter"/>
+            <div class="o_search_panel_current_selection o_search_panel_mobile_collapsed_only text-truncate ml-2 mr-auto">
+                <t t-if="emptySelection">Filters...</t>
+                <t t-if="!emptySelection">
+                    <span t-foreach="categories" t-as="category" class="o_search_panel_category mr-1">
+                        <i t-if="category.icon" t-attf-class="o_search_panel_section_icon fa #{category.icon}" t-attf-style="#{category.color ? ('color: ' + category.color) : undefined}"/>
+                        <t t-esc="category.values.join('/')"/>
+                    </span>
+                    <span t-foreach="filters" t-as="filter" class="o_search_panel_filter mr-1">
+                        <i t-if="filter.icon" t-attf-class="o_search_panel_section_icon fa #{filter.icon}" t-attf-style="#{filter.color ? ('color: ' + filter.color) : undefined}"/>
+                        <t t-esc="filter.values.join(', ')"/>
+                    </span>
+                </t>
+            </div>
+        </div>
+    </summary>
+    <div class="o_search_panel_current_selection o_searchview">
+        <t t-if="emptySelection">Filters...</t>
+        <t t-if="!emptySelection">
+            <div class="o_searchview_input_container">
+                <div t-foreach="categories" t-as="category" class="o_search_panel_category o_searchview_facet">
+                    <i t-if="category.icon" t-attf-class="o_searchview_facet_label o_search_panel_section_icon fa #{category.icon}" t-attf-style="#{category.color ? ('background-color: ' + category.color) : undefined}"/>
+                    <div class="o_facet_values">
+                        <span t-esc="category.values.join('/')"/>
+                    </div>
+                </div>
+                <div t-foreach="filters" t-as="filter" class="o_search_panel_filter o_searchview_facet">
+                    <i t-if="filter.icon" t-attf-class="o_searchview_facet_label o_search_panel_section_icon fa #{filter.icon}" t-attf-style="#{filter.color ? ('background-color: ' + filter.color) : undefined}"/>
+                    <div class="o_facet_values">
+                        <span t-esc="filter.values.join(', ')"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </div>
+    <button class="o_search_panel_mobile_bottom_close btn btn-primary w-100 fixed-bottom">See result</button>
+</t>
+
+<t t-name="SnackBar" >
+    <div class="o_snackbar">
+        <p class="o_snackbar_message">
+            <t t-esc="widget.message"/>
+        </p>
+        <button type="button" class="o_snackbar_button">
+            <t t-esc="widget.actionText"/>
+        </button>
+    </div>
+</t>
+
+</templates>
