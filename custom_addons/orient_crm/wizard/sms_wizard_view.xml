@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_wizard_view_form" model="ir.ui.view">
+        <field name="name">sms.wizard.view.form</field>
+        <field name="model">sms.wizard</field>
+        <field name="arch" type="xml">
+            <form string="SMS">
+                <group>
+                    <group>
+                        <field name="sms_body" required="1"  placeholder="Message..."/>
+                        <field name="single"/>
+                    </group>
+                    <group>
+                        <field name="mobile" placeholder="Mobile..." attrs="{'invisible':[('single','=',False)],'required':[('single','=',True)]}"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="partner_ids" attrs="{'invisible':[('single','=',True)],'required':[('single','=',False)]}" domain="[('customer','=',False),('supplier','=',False),('parent_id','!=',False)]"/>
+                </group>
+                <footer>
+                    <button string="Send" name="send_sms" type="object" class="btn btn-sm btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn btn-sm btn-default"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_send_sms_orient" model="ir.actions.act_window">
+        <field name="name">Send SMS</field>
+        <field name="res_model">sms.wizard</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+        
+    <menuitem id="menu_send_sms_wizard" name="Send SMS" parent="mass_mailing.mass_mailing_menu" action="action_send_sms_orient"/>
+</odoo>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="True">
+
+        <record id="res_partner_industry_agriculture" model="res.partner.industry">
+            <field name="name">Agriculture</field>
+            <field name="full_name">Agriculture</field>
+        </record>
+
+        <record id="res_partner_industry_arts" model="res.partner.industry">
+            <field name="name">Arts</field>
+            <field name="full_name">Arts</field>
+        </record>
+
+        <record id="res_partner_industry_aviation" model="res.partner.industry">
+            <field name="name">Aviation</field>
+            <field name="full_name">Aviation</field>
+        </record>
+
+        <record id="res_partner_industry_BFSI" model="res.partner.industry">
+            <field name="name">BFSI</field>
+            <field name="full_name">BFSI</field>
+        </record>
+
+        <record id="res_partner_industry_Cement" model="res.partner.industry">
+            <field name="name">Cement</field>
+            <field name="full_name">Cement</field>
+        </record>
+
+        <record id="res_partner_industry_Education" model="res.partner.industry">
+            <field name="name">Education</field>
+            <field name="full_name">Education</field>
+        </record>
+
+        <record id="res_partner_industry_Energy_tilities" model="res.partner.industry">
+            <field name="name">Energy and Utilities</field>
+            <field name="full_name">Energy and Utilities</field>
+        </record>
+
+        <record id="res_partner_industry_FMCG" model="res.partner.industry">
+            <field name="name">FMCG</field>
+            <field name="full_name">FMCG</field>
+        </record>
+
+        <record id="res_partner_industry_Government_PSUs" model="res.partner.industry">
+            <field name="name">Government and PSUs</field>
+            <field name="full_name">Government and PSUs</field>
+        </record>
+
+        <record id="res_partner_industry_Healthcare" model="res.partner.industry">
+            <field name="name">Healthcare</field>
+            <field name="full_name">Healthcare</field>
+        </record>
+
+        <record id="res_partner_industry_Hospitality_tourism" model="res.partner.industry">
+            <field name="name">Hospitality and Tourism</field>
+            <field name="full_name">Hospitality and Tourism</field>
+        </record>
+
+        <record id="res_partner_industry_IT_ITeS" model="res.partner.industry">
+            <field name="name">IT/ITeS</field>
+            <field name="full_name">IT/ITeS</field>
+        </record>
+
+        <record id="res_partner_industry_Legal" model="res.partner.industry">
+            <field name="name">Legal</field>
+            <field name="full_name">Legal</field>
+        </record>
+
+        <record id="res_partner_industry_Logistics" model="res.partner.industry">
+            <field name="name">Logistics</field>
+            <field name="full_name">Logistics</field>
+        </record>
+
+        <record id="res_partner_industry_Manufacturing" model="res.partner.industry">
+            <field name="name">Manufacturing</field>
+            <field name="full_name">Manufacturing</field>
+        </record>
+
+        <record id="res_partner_industry_Media_entertainment" model="res.partner.industry">
+            <field name="name">Media and Entertainment</field>
+            <field name="full_name">Media and Entertainment</field>
+        </record>
+
+        <record id="res_partner_industry_Oil_gas" model="res.partner.industry">
+            <field name="name">Oil and Gas</field>
+            <field name="full_name">Oil and Gas</field>
+        </record>
+
+        <record id="res_partner_industry_Pharmaceuticals" model="res.partner.industry">
+            <field name="name">Pharmaceuticals</field>
+            <field name="full_name">Pharmaceuticals</field>
+        </record>
+
+        <record id="res_partner_industry_Power" model="res.partner.industry">
+            <field name="name">Power</field>
+            <field name="full_name">Power</field>
+        </record>
+
+        <record id="res_partner_industry_Corporate Services" model="res.partner.industry">
+            <field name="name">Corporate Services</field>
+            <field name="full_name">Corporate Services</field>
+        </record>
+
+        <record id="res_partner_industry_Real Estate_construction" model="res.partner.industry">
+            <field name="name">Real Estate and Construction</field>
+            <field name="full_name">Real Estate and Construction</field>
+        </record>
+
+        <record id="res_partner_industry_Retail" model="res.partner.industry">
+            <field name="name">Retail</field>
+            <field name="full_name">Retail</field>
+        </record>
+
+        <record id="res_partner_industry_Telecommunications" model="res.partner.industry">
+            <field name="name">Telecommunications</field>
+            <field name="full_name">Telecommunications</field>
+        </record>
+
+        <record id="res_partner_industry_Travel" model="res.partner.industry">
+            <field name="name">Travel</field>
+            <field name="full_name">Travel</field>
+        </record>
+
+        <record id="res_partner_industry_Steel" model="res.partner.industry">
+            <field name="name">Steel</field>
+            <field name="full_name">Steel</field>
+        </record>
+
+        <record id="res_partner_industry_Other" model="res.partner.industry">
+            <field name="name">Other</field>
+            <field name="full_name">Other</field>
+        </record>
+
+        <!--
+        Resource: res.partner.tag
+        -->
+        <record id="res_partner_tag_finance" model="res.partner.type.tag">
+            <field name="name">Finance</field>
+        </record>
+        <record id="res_partner_tag_procurement" model="res.partner.type.tag">
+            <field name="name">Procurement</field>
+        </record>
+        <record id="res_partner_tag_it" model="res.partner.type.tag">
+            <field name="name">IT</field>
+        </record>
+        <record id="res_partner_tag_management" model="res.partner.type.tag">
+            <field name="name">Management</field>
+        </record>
+        <record id="res_partner_tag_Business" model="res.partner.type.tag">
+            <field name="name">Business</field>
+        </record>
+        <record id="res_partner_tag_hr" model="res.partner.type.tag">
+            <field name="name">HR</field>
+        </record>
+        <record id="res_partner_tag_operations" model="res.partner.type.tag">
+            <field name="name">Operations</field>
+        </record>
+
+
+        <record id="user_mumbai" model="res.user.city">
+            <field name="name">Mumbai</field>
+        </record>
+
+        <record id="user_ahmedabad" model="res.user.city">
+            <field name="name">Ahmedabad</field>
+        </record>
+
+        <record id="user_bangalore" model="res.user.city">
+            <field name="name">Bangalore</field>
+        </record>
+
+        <record id="user_delhi" model="res.user.city">
+            <field name="name">Delhi</field>
+        </record>
+
+        <record id="user_pune" model="res.user.city">
+            <field name="name">Pune</field>
+        </record>
+
+        <record id="user_chennai" model="res.user.city">
+            <field name="name">Chennai</field>
+        </record>
+
+    </data>
+</odoo>

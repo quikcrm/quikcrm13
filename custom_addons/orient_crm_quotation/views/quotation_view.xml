@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_view_inherit_quotation" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.quotation</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/field[@name='partner_id']" position="after">
+                <field name="bu_temp" options='{"no_create": True}'/>
+                <field name="is_morden" invisible="1"/>
+                <field name="is_datacenter" invisible="1"/>
+            </xpath>
+         </field>
+    </record>
+
+    <!-- <record id="sale_crm.sale_action_quotations" model="ir.actions.act_window">
+        <field name="name">Quotationsss</field>
+        <field name="res_model">sale.order</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="domain">[('opportunity_id', '=', active_id)]</field>
+        <field name="context">{'search_default_opportunity_id': [active_id], 'default_opportunity_id': active_id}</field>
+    </record> -->
+<!-- 
+    <record id="sale_crm.sale_action_quotations_new" model="ir.actions.act_window">
+        <field name="name">Quotation</field>
+        <field name="res_model">sale.order</field>
+        <field name="search_view_id" ref="sale_crm.sale_action_quotations_new"/>
+        <field name="view_mode">form,tree,graph</field>
+        <field name="domain">[('opportunity_id', '=', active_id)]</field>
+        <field name="context">{'search_default_opportunity_id': active_id, 'default_opportunity_id': active_id, 'default_bu_temp': crm_bu_id}</field>
+    </record> -->
+
+
+    <record id="crm_case_form_view_oppor_quo_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.oppor.inherited.crm</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+        <field name="arch" type="xml">
+            <button name="action_view_sale_quotation" position="attributes">
+                <attribute name="context">{'default_partner_id': partner_id, 'search_default_draft': 1, 'search_default_sent': 1}</attribute>
+            </button>
+        </field>
+    </record>
+</odoo>

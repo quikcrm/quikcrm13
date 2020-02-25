@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="True">
+
+        <!--
+        Resource: project.project
+        -->
+        <record id="project_purchase" model="project.project">
+            <field name="name">Purchase</field>
+        </record>
+
+        <record id="project_scm" model="project.project">
+            <field name="name">SCM</field>
+        </record>
+
+    </data>
+</odoo>

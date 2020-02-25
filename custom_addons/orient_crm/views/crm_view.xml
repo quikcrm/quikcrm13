@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- calendar form view inherit -->
+        <!-- commented by ankit -->
+        <record id="view_calendar_event_form_inherit" model="ir.ui.view">
+            <field name="name">calendar.event.form.popup.inherit</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group/group/field[@name='alarm_ids']" position="after">
+                    <field name="description"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!--
+            crm.bu views
+        -->
+        <record id="crm_bu_form" model="ir.ui.view">
+            <field name="name">crm.bu.form</field>
+            <field name="model">crm.bu</field>
+            <field name="arch" type="xml">
+                <form string="Lead BUs">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_bu_tree" model="ir.ui.view">
+            <field name="name">crm.bu.tree</field>
+            <field name="model">crm.bu</field>
+            <field name="arch" type="xml">
+                <tree string="Lead BUs">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--
+            crm.sub.bu views
+        -->
+        <record id="crm_sub_bu_form" model="ir.ui.view">
+            <field name="name">crm.sub.bu.form</field>
+            <field name="model">crm.sub.bu</field>
+            <field name="arch" type="xml">
+                <form string="Lead Sub BUs">
+                    <group>
+                        <field name="name"/>
+                        <field name="crm_bu_id" required="1" options='{"no_create": True}'/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_sub_bu_tree" model="ir.ui.view">
+            <field name="name">crm.sub.bu.tree</field>
+            <field name="model">crm.sub.bu</field>
+            <field name="arch" type="xml">
+                <tree string="Lead Sub BUs">
+                    <field name="name"/>
+                    <field name="crm_bu_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- crm.vendor views -->
+
+        <record id="crm_vendor_form" model="ir.ui.view">
+            <field name="name">crm.vendor.form</field>
+            <field name="model">crm.vendor</field>
+            <field name="arch" type="xml">
+                <form string="Vendors">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_vendor_tree" model="ir.ui.view">
+            <field name="name">crm.vendor.tree</field>
+            <field name="model">crm.vendor</field>
+            <field name="arch" type="xml">
+                <tree string="Vendors">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Configuration/Lead & Opporotunities/Lead Tags Menu -->
+        <record id="crm_bu_action" model="ir.actions.act_window">
+            <field name="name">Lead Bus</field>
+            <field name="res_model">crm.bu</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_id" ref="crm_bu_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new sales BU.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_crm_lead_categ_bu"
+            name="Lead BUs"
+            action="crm_bu_action"
+            parent="crm.menu_crm_config_lead"
+            sequence="2"/>
+
+        <record id="crm_sub_bu_action" model="ir.actions.act_window">
+            <field name="name">Lead Sub bus</field>
+            <field name="res_model">crm.sub.bu</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_id" ref="crm_sub_bu_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new sales Sub BU.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_crm_lead_categ_sub"
+            name="Lead Sub BUs"
+            action="crm_sub_bu_action"
+            parent="crm.menu_crm_config_lead"
+            sequence="3"/>
+
+        <!-- Configuration/Lead & Opporotunities/vendors Menu -->
+
+        <record id="crm_vendor_action" model="ir.actions.act_window">
+            <field name="name">Vendors</field>
+            <field name="res_model">crm.vendor</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_id" ref="crm_vendor_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new vendor.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_crm_vendor_categ"
+            name="Vendors"
+            action="crm_vendor_action"
+            parent="crm.menu_crm_config_lead"
+            sequence="7"/>
+        
+            
+        <menuitem name="Contacts"
+                  id="contacts.menu_contacts"
+                  sequence="2"
+                  web_icon="contacts,static/description/icon.png"
+                  groups="base.group_user,base.group_partner_manager"/>
+
+        <menuitem
+            id="crm.crm_menu_root"
+            name="CRM"
+            action="orient_crm.action_assign_target"
+            sequence="1"/>
+        
+        <record id="contacts.action_contacts" model="ir.actions.act_window">
+            <field name="name">My Contacts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">['|','|','|',('user_id.team_leader_id','=',uid),('user_id.team_leader_id.team_leader_id','=',uid),('user_id.team_leader_id.team_leader_id.team_leader_id','=',uid),('user_id','=',uid)]</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="context">{'default_is_company': True,'search_default_type_company':1}</field>
+            <!-- <field name="context">{'default_customer': False,'search_default_type_company':1}</field> -->
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a contact in your contacts directory.
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to
+                    a customer: discussions, history of business opportunities,
+                    documents, etc.
+                </p>
+            </field>
+        </record>
+        
+        <!-- ankit commented below -->
+        <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+            <field name="view_mode">kanban,tree,graph,pivot,form,calendar</field>
+            <field name="context">{
+                'default_type': 'opportunity',
+                'search_default_assigned_to_me': 1,
+                'search_default_shared_to_me': 1}</field>
+        </record>
+        
+        <record id="action_lead_documents" model="ir.actions.act_window">
+            <field name="name">Attachments</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ir.attachment</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_id" ref="base.view_attachment_tree"/>
+            <field name="search_view_id" ref="base.view_attachment_search"/>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'default_res_model':active_model,'default_res_id':active_id,'default_lead_company_id':context.get('partner_id')}</field>
+            <field name="domain">['|',('res_id','in',[active_id]),('lead_company_id','in',[active_id])]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create new documents.
+                </p>
+                <p>
+                    Also you will find here all the related documents and download it by clicking on any individual document.
+                </p>
+            </field>
+        </record>
+        
+        <!--Lead View-->
+
+        <!-- ankit comment below -->
+        <record id="quick_create_opportunity_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.simple.view.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                    <attribute name="domain">['|','|','|',('user_id.team_leader_id','=',uid),('user_id.team_leader_id.team_leader_id','=',uid),('user_id.team_leader_id.team_leader_id.team_leader_id','=',uid),('user_id','=',uid),('parent_id','!=',False)]</attribute>
+                    <attribute name="options">{"no_create": True}</attribute>
+                    <attribute name="context">{}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!--Lead View-->
+        <!-- Ankit commented below -->
+        <record id="crm_lead_document_view" model="ir.ui.view">
+            <field name="name">crm.lead.document.view</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <field name="message_follower_ids" position="replace"/>
+                <field name="activity_ids" position="replace"/>
+                <field name="message_ids" position="replace"/>
+                <field name="priority" position="after">
+                    <field name="lead_category" required="1"/>
+                    <field name="crm_bu_id" options='{"no_create": True}'/>
+                    <field name="crm_sub_bu_id" options='{"no_create": True}' domain="[('crm_bu_id','=',crm_bu_id)]"/>
+                </field>
+                <field name="team_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
+                <field name="user_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="email_from" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="tag_ids" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//sheet/group/group[2]/label[@for='email_from']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//sheet/group/group[2]/div" position="replace">
+                    <field name="crm_vendor_id" options='{"no_create": True}'/>
+                    <field name="user_ids" widget="many2many_tags" options='{"no_create": True}' groups="orient_crm.group_sale_salesman_share_leads"/>
+                    <field name="user_id" domain="[('share', '=', False)]"
+                        context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'sales_team.group_sale_salesman_all_leads'], 'team_id': team_id}" readonly="1" groups="orient_crm.group_sale_salesman_team_leads" options="{'no_create': True}"/>
+                    <field name="team_id" string="Source" widget="selection"
+                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                </xpath>
+                <field name="partner_address_phone" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="country_id" position="attributes">
+                    <attribute name="options">{"no_open": True, "no_create": True}</attribute>
+                    <attribute name="readonly">[('type', '=', 'contact'),('parent_id', '!=', False)]</attribute>
+                </field>
+
+                <xpath expr="//sheet/group/group[2]/field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Company</attribute>
+                    <attribute name="domain">['|','|','|',('user_id.team_leader_id','=',uid),('user_id.team_leader_id.team_leader_id','=',uid),('user_id.team_leader_id.team_leader_id.team_leader_id','=',uid),('user_id','=',uid),('parent_id','=',False)]</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page" position="replace">
+                    <page string="Requirements">
+                        <field name="description"/>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@name='lead']" position="before">
+                    <page string="Demo">
+                        <group>
+                            <field name="demo_name"/>
+                        </group>                    
+                    </page>
+                    <page string="Vendor">
+                        <group>
+                            <field name="supplier_name"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//group[@name='Misc']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='lead']/group/group[3]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" context="{'partner_id':partner_id}"  name="%(action_lead_documents)d" type="action" icon="fa-files-o">
+                        <field string="Documents" name="doc_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <xpath expr="//sheet/div[2]/h2" position="replace">
+                    <h2 class="o_row row no-gutters d-flex">
+                        <div class="col" attrs="{'invisible': [('type', '=', 'lead')]}">
+                            <label for="planned_revenue"/>
+                            <div class="o_row">
+                                <field name="company_currency" invisible="1"/>
+                                <field name="planned_revenue" class="oe_inline" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <span class="oe_grey p-2"> at </span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="probability"/>
+                            <div id="probability" class="o_row">
+                                <field name="is_automated_probability" invisible="1"/>
+                                <field name="probability" widget="float" class="oe_inline"/>
+                                <span class="oe_grey"> %%</span>
+                                <span class="oe_grey p-2"> for </span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="bottom_line"/>
+                            <div id="bottom_line" class="o_row">
+                                <field name="bottom_line" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                            </div>
+                        </div>
+                    </h2>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--Contact View-->
+        <record id="res_partner_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.view.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" name="%(action_lead_documents)d" type="action" icon="fa-files-o">
+                        <field string="Documents" name="doc_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <!-- ankit commented -->
+                <xpath expr="//form//sheet//notebook//page//form//sheet//group//group//field[@name='function']" position="after">
+                    <field name="contact_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" string="Contact Type Tags"/>
+                </xpath>
+                <!-- ankit commented -->
+                <xpath expr="//form//sheet//notebook//page//form//sheet//group//group//field[@name='title']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('type','in',('contact','invoice','delivery','other'))]}</attribute>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//page//field//form//sheet//field[@name='type']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_type']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!--                <xpath expr="//field[@name='lang']" position="after">
+                    <field name="duplicated" attrs="{'invisible':[('id','!=',False)]}"/>
+                </xpath>-->
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//page//form//sheet//group//group[2]//field[@name='phone']" position="attributes">
+                    <attribute name="string">Landline</attribute>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <!--Hide log on partner form View-->
+        <record id="mail_chatter_form_inherit" model="ir.ui.view">
+            <field name="name">mail_chatter_form_inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="mail.res_partner_view_form_inherit_mail"/>
+            <field name="arch" type="xml">
+                <field name="message_follower_ids" position="replace"/>
+                <field name="activity_ids" position="replace"/>
+                <field name="message_ids" position="replace"/>
+            </field>
+        </record>
+        
+        <!--Attachment View-->
+        <record id="ir_attachment_view_inherit" model="ir.ui.view">
+            <field name="name">ir.attachment.view</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='datas']" position="before">
+                    <field name="lead_company_id" invisible="1"/>
+                    <field name="lead_type" attrs="{'invisible':[('res_model','!=','crm.lead')],'required':[('res_model','=','crm.lead')]}"/>
+                    <field name="contact_type" attrs="{'invisible':[('res_model','!=','res.partner')],'required':[('res_model','=','res.partner')]}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--Partner Tree-->
+        <record id="view_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.tree.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <field name="phone" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="phone" position="before">
+                    <field name="mobile"/>
+                </field>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="import">false</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--Partner Kanban View-->
+        <record id="view_partner_kanban_inherit" model="ir.ui.view">
+            <field name="name">res.partner.kanban.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="import">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_form_kanban_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.kanban.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban//field[@name='phone']" position="after">
+                    <field name="contact_tag_ids"/>
+                </xpath>
+                <xpath expr="//kanban//templates//t//div//div//field[@name='name']" position="after">
+                    <div t-if="record.contact_tag_ids.raw_value"><field name="contact_tag_ids"/></div>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--Attachment Tree-->
+        <record id="ir_attachment_tree_view_inherit" model="ir.ui.view">
+            <field name="name">ir.attachment.tree.view</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_tree"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="lead_type" />
+                    <field name="contact_type" />
+                </field>
+            </field>
+        </record>
+        
+        <!--Attachment Tree-->
+        <record id="crm_lead_tree_view_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.tree.view.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-success">stage_id==4</attribute>
+                    <attribute name="decoration-info">stage_id==2</attribute>
+                    <attribute name="decoration-primary">stage_id==1</attribute>
+                    <attribute name="decoration-warning">stage_id==3</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--Attachment Search-->
+        <record id="ir_attachment_search_view" model="ir.ui.view">
+            <field name="name">ir.attachment.search.view</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='owner']" position="before">
+                    <filter name="lead_type" string="Document Type(Lead)" domain="[]" context="{'group_by':'lead_type'}"/>
+                    <filter name="contact_type" string="Document Type(Contact)" domain="[]" context="{'group_by':'contact_type'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!--Attachment Search-->
+        <record id="crm_search_view_inherit" model="ir.ui.view">
+            <field name="name">crm.search.view.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='message_needaction']" position="before">
+                    <separator/>
+                    <filter name="lead_hunting" string="Hunting" domain="[('lead_category','=','hunting')]"/>
+                    <filter name="lead_farming" string="Farming" domain="[('lead_category','=','farming')]" />
+                    <separator/>
+                </xpath>
+                <xpath expr="//filter[@name='assigned_to_me']" position="after">
+                    <filter string="Shared Leads" name="shared_to_me" domain="[('user_ids','in',[uid])]" help="Opportunities that are shared to me"/>
+                </xpath>
+                <xpath expr="//filter[@name='stage']" position="after">
+                    <filter name="lead_category" string="Lead Category" domain="[]" context="{'group_by':'lead_category'}"/>
+                </xpath>
+                <xpath expr="//group/filter[@name='salesperson']" position="after">
+                    <filter string="City" context="{'group_by':'city'}" name = 'city'/>
+                    <filter string="BU" context="{'group_by':'crm_bu_id'}" name='bu'/>
+                </xpath>
+            </field>
+        </record>
+    
+        <!--User Tree-->
+        <record id="res_users_tree_view_inherit" model="ir.ui.view">
+            <field name="name">res.users.tree.view</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <field name="login" position="after">
+                    <field name="team_leader_id" />
+                </field>
+            </field>
+        </record>
+        
+        <!--Industry menuitem-->
+        <menuitem id="menu_industry_partner"
+                   action="base.res_partner_industry_action"
+                   parent="contacts.menu_localisation"
+                   sequence="3"/>
+    </data>
+</odoo>

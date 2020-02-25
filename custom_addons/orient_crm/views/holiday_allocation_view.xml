@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_holidays_allocation_form" model="ir.ui.view">
+            <field name="name">hr.holidays.allocation.form</field>
+            <field name="model">holiday.allocation</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Leave Allocation">
+                    <sheet>
+                        <group colspan="8">
+                            <group>
+                                <field name="holiday_status_id" domain="[('allocable', '=', True)]"
+                                       options="{'no_create': True, 'no_open': True}" required="1"
+                                       string="Leave Type*"/>
+                                <field name="code" readonly="1" force_save="1" string="Leave Code*"/>
+                                <label for="total_days" string="Leaves*"/>
+                                <div>
+                                    <div>
+                                        <field name="total_days" attrs="{'readonly':[('code','=','CO')]}" 
+                                               required="1" class="oe_inline" force_save="1"/> day(s)
+                                    </div>
+                                </div>
+                                <field name="show_temp_ids" force_save="1" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="employee_id" required="1"
+                                       options="{'no_create': True, 'no_open': True}" string="Employee*"/>
+                                <field name="employee_code" string="Employee Code*" readonly="1" force_save="1" required="1"/>
+                                <field name="manager_id" readonly="1" force_save="1" required="1" 
+                                       string="Reporting Manager*" options="{'no_open': True}" />
+                                <field name="department_id" string="Department*"
+                                       options="{'no_open': True}" readonly="1" force_save="1"/>
+                                <field name="site_id" string="Site*"
+                                       options="{'no_open': True}" readonly="1" force_save="1"/>
+                                <field name="current_month" string="Month*" readonly="1" force_save="1" invisible="1"/>
+                                <field name="financial_year_id" string="Financial Year*" 
+                                       attrs="{'invisible':[('code','=','CO')],
+                                               'required':[('code','!=','CO')]}"
+                                       readonly="0" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="comp_off" invisible="1"/>
+                                <field name="comp_off_date" attrs="{'invisible':[('comp_off','=',False)]}"/>
+                            </group>
+                            <group colspan="8">
+                                <button string="Search Records" type="object" name="search_allocated_leaves" 
+                                        style="background-color:lightgrey;width:41%%" icon="/web/static/lib/pdfjs/web/images/toolbarButton-search@2x.png"/>
+                            </group>
+                                <button string="Allocate Leaves" type="object" name="allocate_leaves"
+                                        colspan="2" style="background-color:#99cc00;width:20%%"
+                                        icon="/web/static/src/img/ui/field_calendar.png"/>
+                                <label string="" colspan="4"/>   
+                                <button string="Update Leaves" type="object" name="update_allocated_leaves" 
+                                        icon="web/static/src/img/pencil.gif"
+                                        colspan="2" style="background-color:#ffff00;width:20%%"
+                                        attrs="{'invisible':[('comp_off','=',True)]}"/>
+                            <group attrs="{'invisible':[('results','=',False)]}">
+                                <br/>
+                                <label string="" colspan="4"/>
+                                <field name="results" nolabel="1" readonly="1" />
+                                <label string="" colspan="4"/>
+                            </group>
+                            <group colspan="2" col="2" attrs="{'invisible':[('show_temp_ids','=',True)]}">
+                                <field name="allocation_line_ids" nolabel="1">
+                                    <tree decoration-danger="state=='refuse'" decoration-info="state=='validate'" 
+                                          decoration-muted="state=='cancel'" create="false" delete="false">
+                                        <field name="employee_id"/>
+                                        <field name="employee_code"/>
+                                        <field name="name" string="Mode"/>
+                                        <field name="department_id" invisible="1"/>
+                                        <field name="holiday_status_id"/>
+                                        <field name="comp_off_date" invisible="1"/>
+                                        <field name="total_days" string="Allocated Leaves"/>
+                                        <field name="balanced_days" string="Balanced Leaves"/>
+                                        <field name="manager_id" invisible="1"/>
+                                        <field name="user_id" invisible="1"/>
+                                        <field name="message_needaction" invisible="1"/>
+                                        <field name="current_month" invisible="1"/>
+                                        <field name="financial_year_id"/>
+                                        <field name="state"/>
+                                        <field name="holiday_allocation_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group colspan="2" col="2" attrs="{'invisible':[('show_temp_ids','=',False)]}">
+                                <field name="allocation_line_temp_ids" nolabel="1">
+                                    <tree decoration-danger="state=='refuse'" decoration-info="state=='validate'" 
+                                          decoration-muted="state=='cancel'" create="false" delete="false">
+                                        <field name="employee_id"/>
+                                        <field name="employee_code"/>
+                                        <field name="name" string="Mode"/>
+                                        <field name="department_id" invisible="1"/>
+                                        <field name="holiday_status_id"/>
+                                        <field name="comp_off_date" invisible="1"/>
+                                        <field name="total_days" string="Allocated Leaves"/>
+                                        <field name="balanced_days" string="Balanced Leaves"/>
+                                        <field name="manager_id" invisible="1"/>
+                                        <field name="user_id" invisible="1"/>
+                                        <field name="message_needaction" invisible="1"/>
+                                        <field name="current_month" invisible="1"/>
+                                        <field name="financial_year_id"/>
+                                        <field name="state"/>
+                                        <field name="holiday_allocation_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_holiday_allocation_id">
+            <field name="name">Allocate leaves</field>
+            <field name="res_model">holiday.allocation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Leaves Allocation
+                </p>
+            </field>
+            <field name="context">{'create':0,'delete':0}</field>
+        </record>
+
+
+        <menuitem
+            id="menu_orient_leave_management_holiday_allocation_master_id"
+            parent="menu_orient_leave_management_allocation"
+            name="Allocate leaves"
+            sequence="1"
+            action="action_holiday_allocation_id"
+            groups="hr_holidays.group_hr_holidays_user,hr_holidays.group_hr_holidays_manager"/>
+
+
+
+        <record id="hr_holidays_allocation_error_logs_form" model="ir.ui.view">
+            <field name="name">hr.holidays.allocation.error.logs.form</field>
+            <field name="model">holiday.allocation.logs</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Monthly leave allocation log">
+                    <sheet>
+                        <group>
+                            <field name="date_a_time" readonly="1" force_save="1"/>
+                            <field name="error_logs" readonly="1" force_save="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_holidays_allocation_error_logs_tree" model="ir.ui.view">
+            <field name="name">hr.holidays.allocation.error.logs.tree</field>
+            <field name="model">holiday.allocation.logs</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Leave allocation error logs">
+                    <field name="date_a_time"/>
+                    <field name="error_logs"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_allocation_error_logs">
+            <field name="name">Allocation Error Logs</field>
+            <field name="res_model">holiday.allocation.logs</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Eror Logs while allocation monthly leaves will appear here
+                </p>
+            </field>
+            <field name="context">{'create':0,'delete':0}</field>
+        </record>
+
+        <menuitem
+            id="menu_leave_allocation_error_logs_id"
+            parent="menu_orient_leave_management_allocation"
+            name="Allocation Error Logs"
+            sequence="2"
+            action="action_allocation_error_logs"
+        />
+
+    </data>
+</odoo>

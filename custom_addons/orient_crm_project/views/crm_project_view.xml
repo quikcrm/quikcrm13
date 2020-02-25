@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_task_form2_inherited_crm" model="ir.ui.view">
+            <field name="name">project.task.form.inherited.crm</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2" />
+            <!-- <field name="groups_id" eval="[(6,0, (ref('hr_timesheet.group_hr_timesheet_user'),))]"/> -->
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_deadline']" position="attributes">            
+                    <attribute name="invisible">1</attribute>        
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="attributes">            
+                    <attribute name="invisible">1</attribute>        
+                </xpath>
+                <xpath expr="//page[@name='description_page']" position="attributes">            
+                    <attribute name="invisible">1</attribute>        
+                </xpath>
+                <xpath expr="//page[@name='extra_info']" position="attributes">            
+                    <attribute name="invisible">1</attribute>        
+                </xpath>
+                <xpath expr="//sheet/group/group/field[@name='user_id']" position="after">
+                    <field name="p_partner_id"/>
+                </xpath>
+                <xpath expr="//sheet/group" position="after">
+                    <group>
+                        <group>
+                            <field name="p_bu_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="p_sub_bu_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="p_vendor_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="distributor"/>
+                            <field name="po_number"/>
+                        </group>
+                        <group>
+                            <field name="p_top_line"/>
+                            <field name="p_bottom_line"/>
+                            <field name="final_bottom_line"/>
+                            <field name="so_number"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='description_page']" position="after">
+                    <page name="product_info" string="Products">
+                        <field name="order_line" mode="tree,kanban">
+                        <form string="Product Lines">
+                            <group>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="top_line"/>
+                                    <field name="bottom_line"/>
+                                    <field name="final_bottom_line"/>
+                                </group>
+                            </group>
+                        </form>
+                        <tree string="Product Lines" editable="bottom">
+                            <field name="name"/>
+                            <field name="top_line"/>
+                            <field name="bottom_line"/>
+                            <field name="final_bottom_line"/>
+                        </tree>
+                        <kanban class="o_kanban_mobile">
+                            <field name="name" invisible="1"/>
+                            <field name="top_line"/>
+                            <field name="bottom_line"/>
+                            <field name="final_bottom_line" invisible="1"/>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                        <div class="row">
+                                            <div class="col-xs-8">
+                                                <strong><span><t t-esc="record.name.value"/></span></strong>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <strong><span class="pull-right text-right">
+                                                <t t-esc="record.top_line.value"/></span></strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 text-muted">
+                                                <span>Top Line: <t t-esc="record.top_line.value"/></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 text-muted">
+                                                <span>Bottom Line: <t t-esc="record.bottom_line.value"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

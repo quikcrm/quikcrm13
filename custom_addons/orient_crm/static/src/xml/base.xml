@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!-- hide the extra buttons of right side dropdown menu -->
+	<template id="web.template" xml:space="preserve">
+		<t t-extend="UserMenu.Actions">
+			<t t-jquery="a[data-menu='documentation']" t-operation='replace'>
+			</t>
+			<t t-jquery="a[data-menu='support']" t-operation='replace'>
+			</t>
+			<t t-jquery="a[data-menu='account']" t-operation='replace'>
+			</t>
+			<t t-jquery="a[data-menu='shortcuts']" t-operation='replace'>
+			</t>
+			<t t-jquery="a[data-menu='settings']" t-operation='replace'>
+				<a role="menuitem" href="#" data-menu="settings" class="dropdown-item">Change password</a>
+			</t>
+		</t>
+	</template>

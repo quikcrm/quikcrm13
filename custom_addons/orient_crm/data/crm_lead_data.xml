@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="categ_oppor01" model="crm.bu">
+            <field name="name">Morden Workplace</field>
+        </record>
+        <record id="categ_oppor03" model="crm.bu">
+            <field name="name">Cloud</field>
+        </record>
+        <record id="categ_oppor04" model="crm.bu">
+            <field name="name">Biz Apps</field>
+        </record>
+        <record id="categ_oppor05" model="crm.bu">
+            <field name="name">ITES</field>
+        </record>
+        <record id="categ_oppor02" model="crm.bu">
+            <field name="name">Data Center</field>
+        </record>
+        <record id="categ_oppor012" model="crm.sub.bu">
+            <field name="name">Laptops</field>
+        </record>
+        <record id="categ_oppor013" model="crm.sub.bu">
+            <field name="name">Desktops</field>
+        </record>
+        <record id="categ_oppor014" model="crm.sub.bu">
+            <field name="name">Printers</field>
+        </record>
+        <record id="categ_oppor015" model="crm.sub.bu">
+            <field name="name">Daas</field>
+        </record>
+        <record id="categ_oppor016" model="crm.sub.bu">
+            <field name="name">Scanners</field>
+        </record>
+        <record id="categ_oppor021" model="crm.sub.bu">
+            <field name="name">Server</field>
+        </record>
+        <record id="categ_oppor022" model="crm.sub.bu">
+            <field name="name">Storage</field>
+        </record>
+        <record id="categ_oppor023" model="crm.sub.bu">
+            <field name="name">Evurity</field>
+        </record>
+        <record id="categ_oppor024" model="crm.sub.bu">
+            <field name="name">Networking</field>
+        </record>
+        <record id="categ_oppor025" model="crm.sub.bu">
+            <field name="name">AV</field>
+        </record>
+        <record id="categ_oppor041" model="crm.sub.bu">
+            <field name="name">Open Source</field>
+        </record>
+        <record id="categ_oppor042" model="crm.sub.bu">
+            <field name="name">Analytics</field>
+        </record>
+        <record id="categ_oppor043" model="crm.sub.bu">
+            <field name="name">Mobility</field>
+        </record>
+        <record id="categ_oppor044" model="crm.sub.bu">
+            <field name="name">PS</field>
+        </record>
+        <record id="categ_oppor052" model="crm.sub.bu">
+            <field name="name">AMC</field>
+        </record>
+        <record id="categ_oppor053" model="crm.sub.bu">
+            <field name="name">FMS</field>
+        </record>
+        <record id="vendor01" model="crm.vendor">
+            <field name="name">Microsoft</field>
+        </record>
+        <record id="vendor02" model="crm.vendor">
+            <field name="name">ThoughtSpot</field>
+        </record>
+        <record id="vendor03" model="crm.vendor">
+            <field name="name">IBM</field>
+        </record>
+        <record id="vendor04" model="crm.vendor">
+            <field name="name">Oracle</field>
+        </record>
+        <record id="vendor05" model="crm.vendor">
+            <field name="name">Google</field>
+        </record>
+        <record id="vendor06" model="crm.vendor">
+            <field name="name">AWS</field>
+        </record>
+        <record id="vendor07" model="crm.vendor">
+            <field name="name">Dell</field>
+        </record>
+        <record id="vendor08" model="crm.vendor">
+            <field name="name">Nutanix</field>
+        </record>
+        <record id="vendor09" model="crm.vendor">
+            <field name="name">HPI</field>
+        </record>
+        <record id="vendor10" model="crm.vendor">
+            <field name="name">HPE</field>
+        </record>
+        <record id="vendor11" model="crm.vendor">
+            <field name="name">SAS</field>
+        </record>
+        <record id="vendor12" model="crm.vendor">
+            <field name="name">Automatapi</field>
+        </record>
+        <record id="vendor13" model="crm.vendor">
+            <field name="name">Citrix</field>
+        </record>
+        <record id="vendor14" model="crm.vendor">
+            <field name="name">Lenovo</field>
+        </record>
+        <record id="vendor15" model="crm.vendor">
+            <field name="name">acer</field>
+        </record>
+        <record id="vendor16" model="crm.vendor">
+            <field name="name">samsung</field>
+        </record>
+        <record id="vendor17" model="crm.vendor">
+            <field name="name">panasonic</field>
+        </record>
+        <record id="vendor18" model="crm.vendor">
+            <field name="name">panasonic</field>
+        </record>
+
+    </data>
+</odoo>

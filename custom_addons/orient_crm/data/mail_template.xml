@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        
+        <!-- Cron that process the birthday and aniversary queue -->
+        <record id="ir_cron_birthday_aniversary_queue" model="ir.cron">
+            <field name="name">E-mail: Birtday and Aniversary wishes to contacts</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model._birthday_anivarsary_reminders()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall" />
+        </record>
+        
+        <!--Birtday mail template-->
+        <record id="email_template_bithday_wish" model="mail.template">
+            <field name="name">Contact: Birtday wish email</field>
+            <field name="email_from">${(object.company_id.admin_user_email)|safe}</field>
+            <field name="subject">Happy Birtday ${object.name | safe} !!!</field>
+            <field name="email_to">${object.email}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="model_id" ref="orient_crm.model_res_partner"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear <b>${object.name}</b>,</p>
+                <p><img alt="" src="/orient_crm/static/src/birthday.jpg" /></p>
+                <p>From,</p>
+                <p><b>Orient Family</b><p>
+        ]]></field>
+            </record>
+        
+        <!--        Aniversary mail template    -->
+        <record id="email_template_anivarsary_wish" model="mail.template">
+            <field name="name">Contact: Anniversary wish email</field>
+            <field name="email_from">${(object.company_id.admin_user_email)|safe}</field>
+            <field name="subject">Happy Anniversary ${object.name | safe} !!!</field>
+            <field name="email_to">${object.email}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="model_id" ref="orient_crm.model_res_partner"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+                <![CDATA[
+            <p>Dear <b>${object.name}</b>,</p>
+            <p><img alt="" src="/orient_crm/static/src/anivarsary.jpeg" /></p>
+            <p>From,</p>
+            <p><b>Orient Family</b><p>
+        ]]>
+            </field>
+        </record>
+
+
+        <!-- shared leads email template -->
+        <record id="email_template_share_lead" model="mail.template">
+            <field name="name">Lead: Assign lead email</field>
+            <field name="email_from">${(object.user_id.partner_id.email)|safe}</field>
+            <field name="subject">Lead: Assign lead email</field>
+            <field name="email_to">${ctx['email_to']}</field>
+            <field name="model_id" ref="orient_crm.model_crm_lead"/>
+            <field name="body_html" type="html">
+                <div>
+                ${ctx['body_html']}
+                % set access_action = object.with_context(force_website=True).get_access_action()
+                % set is_online = access_action and access_action['type'] == 'ir.actions.act_url'
+                % set access_url = object.get_mail_url()
+                <p>${object.user_id.name} has assigned you a lead
+                <strong>${object.name}</strong>
+                for ${object.partner_id.name}.
+                </p>
+
+                <br/><br/>
+                <a href="${access_url}" style="background-color: #8080ff; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;" class="o_default_snippet_text">View Lead</a>
+                <br/><br/>
+
+                <p>Thank you,</p>
+
+                <p style="color:#888888">
+                % if object.user_id and object.user_id.signature:
+                    ${object.user_id.signature | safe}
+                % endif
+                </p>
+                </div></field>
+        </record>
+    </data>
+</odoo>

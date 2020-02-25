@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="confirm_wizard_view_form" model="ir.ui.view">
+        <field name="name">confirm.wizard.view.form</field>
+        <field name="model">confirm.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirmation">
+                <group>
+                    <h2 style="color:blue">Are you want to create duplicate company with name</h2>
+                </group>
+                <footer>
+                    <button string="YES" name="send_sms" type="object" class="btn btn-sm btn-primary"/>
+                    <button string="NO" name="send_sms" type="object" class="btn btn-sm btn-default"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_confirm_wizard_orient" model="ir.actions.act_window">
+        <field name="name">Confirmation</field>
+        <field name="res_model">confirm.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+</odoo>

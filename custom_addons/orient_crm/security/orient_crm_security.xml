@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- kinjal added -->
+
+    <record id="module_category_orient_crm" model="ir.module.category">
+        <field name="name">Contacts</field>
+        <field name="description">Helps you manage your Contacts.</field>
+        <field name="sequence">28</field>
+    </record>
+
+    <!-- ankit commented below -->
+
+    <record id="group_contact_merge_contacts" model="res.groups">
+        <field name="name">Able to Merge Contacts</field>
+        <field name="category_id" ref="module_category_orient_crm"/>
+    </record>
+
+    <!-- ankit commented below -->
+    <record id="group_manage_contacts" model="res.groups">
+        <field name="name">Can Approve Delete Requests (Contacts)</field>
+        <field name="category_id" ref="module_category_orient_crm"/>
+    </record>
+    
+    <!-- ankit commented below -->
+    <record id="group_hide_website" model="res.groups">
+        <field name="name">INVISIBLE</field>
+    </record>
+
+
+    <record id="target_master_rule" model="ir.rule">
+        <field name="name">Target Master</field>
+        <field name="model_id" ref="orient_crm.model_assign_target"/>
+        <field name="domain_force">['|','|','|',('user_id','=',user.id),('user_id.team_leader_id','=',user.id),('user_id.team_leader_id.team_leader_id','=',user.id),('user_id.team_leader_id.team_leader_id.team_leader_id','=',user.id)]</field>
+    </record>
+
+    <!-- CALENDER RULES ARE HERE -->
+
+    <!-- kinjal added -->
+    <record id="module_category_calendar" model="ir.module.category">
+        <field name="name">Calendar</field>
+        <field name="description">Helps you manage your Calendar.</field>
+        <field name="sequence">29</field>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="group_own_calendar" model="res.groups">
+        <field name="name">Able to see own calendar (Pre-sales)</field>
+        <field name="category_id" ref="module_category_calendar"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="group_calendar_sales" model="res.groups">
+        <field name="name">Sales: Just Own calendar + All Pre-Sales calendar</field>
+        <field name="category_id" ref="module_category_calendar"/>
+        <field name="comment">the user will have access to Own calendar + All Pre-Sales calendar.</field>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="group_calendar_team_lead" model="res.groups">
+        <field name="name">Team Leader: Calendar of Team Members + All Pre-Sales calendar</field>
+        <field name="category_id" ref="module_category_calendar"/>
+        <field name="comment">the user will have access to all records under his team + All Pre-Sales in the calendar application.</field>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="group_calendar_marketing_everyone" model="res.groups">
+        <field name="name">Marketing: Everyone's calendar</field>
+        <field name="category_id" ref="module_category_calendar"/>
+        <field name="comment">the user will have access to all records under his team + All Pre-Sales in the calendar application.</field>
+    </record>
+
+    <!-- ankit commented below -->
+    <record id="calendar_event_rule_own" model="ir.rule">
+        <field name="name">Own calendar events</field>
+        <field ref="model_calendar_event" name="model_id"/>
+        <field name="domain_force">['|',('user_id','=',user.id),('user_id','=',False)]</field>
+        <field name="groups" eval="[(4, ref('group_own_calendar'))]"/>
+    </record>
+
+    <!-- ankit commented below -->
+    <record id="calendar_event_rule_sales" model="ir.rule">
+        <field name="name">Own calendar events and pre-sales</field>
+        <field ref="model_calendar_event" name="model_id"/>
+        <field name="domain_force">['|','|',('user_id','=',user.id),('user_id','=',False),('is_presales','=',True)]</field>
+        <field name="groups" eval="[(4, ref('group_calendar_sales'))]"/>
+    </record>
+
+    <!-- ankit commented below -->
+    <record id="calendar_event_rule_team_leader" model="ir.rule">
+        <field name="name">Team Leader Calendar</field>
+        <field name="model_id" ref="model_calendar_event"/>
+        <field name="domain_force">['|','|',('user_id','=',user.id),('user_id.team_leader_id','=',user.id),('is_presales','=',True)]</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[(4,ref('group_calendar_team_lead'))]"/>
+    </record>
+
+    <!-- ankit commented below -->
+    <record id="calendar_event_rule_marketing_employee" model="ir.rule">
+        <field ref="model_calendar_event" name="model_id"/>
+        <field name="name">All Calendar Event for marketing employees</field>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4,ref('group_calendar_marketing_everyone'))]"/>
+    </record>
+
+    <!-- added by kinjal -->
+    <!-- <record id="module_category_sales_management" model="ir.module.category">
+        <field name="name">Leads of Sales</field>
+        <field name="description">Helps you handle your quotations, sale orders and invoicing.</field>
+        <field name="sequence">1</field>
+    </record> -->
+
+    <!-- kinjal added -->
+    <!-- <record id="group_sale_salesman" model="res.groups">
+        <field name="name">User: Own Documents Only</field>
+        <field name="category_id" ref="base.module_category_sales_sales"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">the user will have access to his own data in the sales application.</field>
+    </record> -->
+
+    <!-- added by kinjal -->
+    <record id="group_sale_salesman_share_leads" model="res.groups">
+        <field name="name">User: Shared Documents</field>
+        <field name="category_id" ref="base.module_category_sales_sales"/>
+        <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="comment">the user will have access to all shared records of user who shared lead with that user in the sales application.</field>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="group_sale_salesman_team_leads" model="res.groups">
+        <field name="name">Team Leader: Documents of Team Members</field>
+        <field name="category_id" ref="base.module_category_sales_sales"/>
+        <field name="implied_ids" eval="[(4, ref('group_sale_salesman_share_leads'))]"/>
+        <field name="comment">the user will have access to all records under his team in the sales application.</field>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="sales_team.group_sale_salesman_all_leads" model="res.groups">
+        <field name="name">User: All Documents</field>
+        <field name="category_id" ref="base.module_category_sales_sales"/>
+        <field name="implied_ids" eval="[(4, ref('group_sale_salesman_team_leads'))]"/>
+        <field name="comment">the user will have access to all records of everyone in the sales application.</field>
+    </record>
+
+    <!-- ankit commented below -->
+    <record id="crm_rule_share_salesteam" model="ir.rule">
+        <field name="name">Share Salesteam</field>
+        <field ref="model_crm_lead" name="model_id"/>
+        <field name="domain_force">[('user_ids','in',[user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_sale_salesman_share_leads'))]"/>
+    </record>
+
+    <!-- kinjal added -->
+    <record id="crm_rule_team_salesteam" model="ir.rule">
+        <field name="name">Team Leader Salesteam</field>
+        <field name="model_id" ref="model_crm_lead"/>
+        <field name="domain_force">[('user_id.team_leader_id.user_ids','in',[user.id])]</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[(4,ref('group_sale_salesman_team_leads'))]"/>
+
+    </record>
+</odoo>

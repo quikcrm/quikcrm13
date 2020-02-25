@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_res_partner_filter_crm_merge" model="ir.ui.view">
+        <field name="name">res.partner.view.search.inherit.orient.crm</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator />
+                <filter name='is_merged' domain="[('is_merged', '=', True)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="base.action_partner_form" model="ir.actions.act_window">
+        <field name="name">My Contacts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">['|',('user_id.team_leader_id','=',uid),'|',('user_id.team_leader_id.team_leader_id','=',uid),'|',('user_id.team_leader_id.team_leader_id.team_leader_id','=',uid),('user_id','=',uid),('company_type','=','company')]</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add a contact in your contacts directory.
+            </p>
+            <p>
+                Odoo helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_approve_request" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('state', '=', 'confirm')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="partner_view_merge_contacts" model="ir.ui.view">
+        <field name="name">partner.merge.contacts.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="23"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="can_reset" invisible="1"/>
+                    <button string="Request for delete contact" name="action_confirm_delete" states="draft" type="object" class="oe_highlight"/>
+                    <button string="Confirm" name="action_confirm" states="draft" type="object" class="oe_highlight" groups="orient_crm.group_manage_contacts"/>
+                    <button string="Approve" name="action_approve" states="confirm" type="object" groups="orient_crm.group_manage_contacts" class="oe_highlight"/>
+                    <button string="Refuse" name="action_refuse" states="confirm,validate,validate1" type="object" groups="orient_crm.group_manage_contacts"/>
+                    <button string="Reset to Draft" name="action_draft" type="object"
+                            attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}" groups="orient_crm.group_manage_contacts"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//kanban//field[@name='parent_id']" position="after">
+                <field name="email_validation"/>
+                <field name="mobile_validation"/>
+                <field name="phone_validation"/>
+            </xpath>
+
+            <xpath expr="//kanban//templates//t//div//div//field[@name='name']" position="before">
+                <t t-if="record.email_validation.raw_value &amp;&amp; record.mobile_validation.raw_value &amp;&amp; record.phone_validation.raw_value">
+                    <div class="label label-success o_kanban_inline_block">Validated <field name="write_uid"/> <field name="write_date"/></div>
+                </t>
+                <t t-elif="record.email.raw_value || record.mobile.raw_value || record.phone.raw_value">
+                    <div class="label label-danger o_kanban_inline_block">Pending</div>
+                </t>
+                <br/>
+            </xpath>
+
+            <xpath expr="//form//sheet//notebook//page//form//sheet//group//group[2]//field[@name='email']" position="after">
+                <field name="email_validation" attrs="{'invisible':[('email','=',False)]}"/>
+            </xpath>
+
+            <xpath expr="//form//sheet//notebook//page//form//sheet//group//group[2]//field[@name='phone']" position="after">
+                <field name="phone_validation" attrs="{'invisible':[('phone','=',False)]}"/>
+            </xpath>
+
+            <xpath expr="//form//sheet//notebook//page//form//sheet//group//group[2]//field[@name='mobile']" position="after">
+                <field name="mobile_validation" attrs="{'invisible':[('mobile','=',False)]}"/>
+                <field name="birth_date"/>
+                <field name="aniv_date"/>
+            </xpath>
+
+            <xpath expr="//sheet/group/group/div/field[@name='country_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <field name="email" position="after">
+                <field name="is_merged" invisible="1"/>
+                <field name="branches"/>
+                <field name="spend"/>
+            </field>
+            <field name="category_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="mobile" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="category_id" position="after">
+                <field name="manpower"/>
+                <field name="contributors"/>
+                <field name="industry_id" options="{'no_create': True}"/>
+                <field name="turnover"/>
+            </field>
+            <page name="sales_purchases" position="after">
+                <page string="Customer Landscape sheet" name="customer_landscape" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}">
+                    <group>
+                        <field name="origin_ids" attrs="{'invisible': [('origin_ids', '=', False)]}" groups="orient_crm.group_contact_merge_contacts"/>
+                        <group string="Infra Setup" name="infra">
+                            <field name="brand"/>
+                            <field name="data_center"/>
+                            <field name="network_security"/>
+                            <field name="solution"/>
+                        </group>
+                        <group string="Application Setup" name="app_setup" colspan="2">
+                            <span class="oe_inline"></span>
+                            <field name="apps"/>
+                            <field name="tools"/>
+                            <field name="bi_access"/>
+                            <field name="bi_challenge"/>
+                            <field name="bi_it_challange"/>
+                            <field name="data_warehouse"/>
+                            <field name="app_deploye"/>
+                            <field name="mob_app"/>
+                            <field name="workforce"/>
+                            <field name="no_of_users"/>
+                            <field name="inhouse_team"/>
+                            <field name="s_crm"/>
+                            <field name="s_hrms"/>
+                            <field name="s_mdm"/>
+                            <field name="bz_apps"/>
+                            <field name="web_apps"/>
+                            <field name="others"/>
+                        </group>
+                        <group string="Services" name="service" colspan="2">
+                            <span class="oe_inline"></span>
+                            <field name="fms_vendor"/>
+                            <field name="skills_required"/>
+                            <field name="fms_renewal"/>
+                            <field name="mvs_vendor"/>
+                            <field name="mvs_renewal"/>
+                            <field name="sd_deployed"/>
+                            <field name="mail_sol_deployed"/>
+                            <field name="mail_box"/>
+                            <field name="vapt_vendor"/>
+                            <field name="vapt_budget"/>
+                            <field name="vapt_renweal"/>
+                            <field name="service_renewal"/>
+                            <field name="renewal_product"/>
+                            <field name="renewal_month_year"/>
+                            <field name="itsm_tool"/>
+                            <field name="itsm_renewal_month"/>
+                            <field name="noc_service"/>
+                            <field name="noc_renewal"/>
+                            <field name="ps_vendor"/>
+                            <field name="ps_skills"/>
+                            <field name="contact_center"/>
+                            <field name="contact_center_des"/>
+                            <field name="contact_center_vendor"/>
+                            <field name="contact_center_renewal"/>
+                            <field name="cust_server"/>
+                            <field name="oem_server"/>
+                            <field name="opex_offer"/>
+                            <field name="ites_setup"/>
+                            <field name="email_solution"/>
+                            <field name="cloud"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+</odoo>

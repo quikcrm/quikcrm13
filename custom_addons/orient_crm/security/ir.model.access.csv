@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_partner,res.partner,base.model_res_partner,base.group_user,1,0,0,0
+access_import_partner,import.partners,model_import_partners,base.group_user,1,1,1,1
+access_import_config,import.config,model_import_config,base.group_user,1,1,1,1
+access_assign_target,assign.target,model_assign_target,base.group_user,1,1,1,0
+crm.access_crm_stage_manager,crm.stage,crm.model_crm_stage,sales_team.group_sale_manager,1,0,0,0
+
+access_res_partner_type_tag,res.partner.type.tag,orient_crm.model_res_partner_type_tag,base.group_user,1,0,0,0
+access_res_user_city,access_res_user_city,model_res_user_city,base.group_user,1,0,0,0
+
+access_res_users,res.users,base.model_res_users,,1,1,0,0
+access_crm_vendor,crm.vendor,model_crm_vendor,base.group_user,1,1,1,1
+access_crm_bu,access_crm_bu,model_crm_bu,base.group_user,1,0,0,0
+access_crm_sub_bu,access_crm_sub_bu,model_crm_sub_bu,base.group_user,1,0,0,0

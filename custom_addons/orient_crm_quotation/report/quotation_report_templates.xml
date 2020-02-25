@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_saleorder_document_inherit_quotation" inherit_id="sale.report_saleorder_document">
+
+    	<xpath expr="//div/div[2]" position="replace">
+        	<div class="row">
+                <div class="col-xs-5 col-xs-offset-1">
+                </div>
+        	</div>
+      	</xpath>
+
+    	<xpath expr="//div/div[2]" position="after">
+        	<div class="row" style="margin-top: 140px;">
+        		<div class="col-xs-6">
+          			<h3></h3>
+	          		<strong> To,</strong>
+	                <div t-field="doc.partner_id"
+	                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+	                <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="doc.partner_id.vat"/></p>
+          		</div>
+          		<div class="col-xs-2"></div>
+          		<div class="col-xs-4" style="margin-top: 50px;">
+          			<t t-if="doc.partner_id.child_ids[0]">
+	          			<t t-set="pn" t-value="doc.partner_id.child_ids[0]"/>
+	          			<span t-field="pn.name"/><br/>
+	          			<span t-field="pn.email"/><br/>
+	          			<span t-field="pn.mobile"/>
+	          		</t>
+          			<!-- <t t-foreach="doc.partner_id.child_ids" t-as="b">
+          			</t> -->
+                </div>
+        	</div>
+      	</xpath>
+
+      	<xpath expr="//div/h2" position="replace">
+        	<div class="row">
+                <div class="col-xs-6">
+                    <h2 style="margin-top: 10px;">
+		                <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+		                    <span t-if="doc.state not in ['draft','sent']">Order # </span>
+		                    <span t-if="doc.state in ['draft','sent']">Quotation # </span>
+		                </t>
+		                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+		                    <span>Pro-Forma Invoice # </span>
+		                </t>
+		                <span t-field="doc.name"/>
+		            </h2>
+                </div>
+            </div>
+      	</xpath>
+
+      	<xpath expr="//table/thead/tr/th[1]" position="before">
+      		<t t-set="pn" t-value="any([l.name for l in doc.order_line])"/>
+      		<t t-if="pn">
+	      		<th>Product</th>
+	      	</t>
+      	</xpath>
+
+      	<xpath expr="//table/thead/tr/th[1]" position="before">
+      		<t t-set="pn" t-value="any([l.name for l in doc.order_line])"/>
+          <t t-if="pn">
+        		<td>
+                <span t-field="l.name"/>
+            </td>
+	        </t>
+      	</xpath>
+
+      	<xpath expr="//table/thead/tr/th[3]" position="after">
+      		<t t-set="pn" t-value="any([l.part_no for l in doc.order_line])"/>
+      		<t t-if="pn">
+	      		<th class="text-right">Part No.</th>
+	      	</t>
+      	</xpath>
+        <!-- ankit commented below -->
+      	<!-- <xpath expr="//table/tbody/t/t[2]/tr/td[3]" position="after">
+      		<t t-set="pn" t-value="any([l.part_no for l in doc.order_line])"/>
+      		<t t-if="pn">
+	      		<td class="text-right">
+	                <span t-field="l.part_no"/>
+	            </td>
+	        </t>
+      	</xpath> -->
+
+      	<!-- <xpath expr="//table/thead/tr/th[1]" position="after">
+      		<t t-set="pn" t-value="any([l.product_lines for l in doc.order_line])"/>
+      		<t t-if="pn">
+	      		<th>Sub Products</th>
+	      	</t>
+      	</xpath>
+      	<xpath expr="//table/tbody/t/t[2]/tr/td[1]" position="after">
+      		<t t-set="pn" t-value="any([l.product_lines for l in doc.order_line])"/>
+      		<t t-if="pn">
+	      		<td>
+	      			<t t-foreach="l.product_lines" t-as="b">
+	      				<span t-field="b.name"/>
+	      				<br></br>
+	      			</t>
+	            </td>
+	        </t>
+      	</xpath> -->
+
+  	</template>
+
+  	<template id="external_layout_footer_custom" inherit_id="web.external_layout_background">
+  		<xpath expr="//div[1]" position="replace">
+  			<div class="header">
+  				<div class="col-xs-6">
+	    			<img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" class="pull-left" height="270" width="350" style="margin-top:-100px;"/>
+	    		</div>
+    			<div class="col-xs-2"></div>
+	            <div class="text-left company_address col-xs-4">
+	                <div>
+	                    <strong t-field="company.partner_id.name"/>
+	                	<div t-field="company.partner_id"
+	                    t-field-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+	                </div>
+	            </div>
+	        </div>
+  		</xpath>
+     
+	</template>
+</odoo>

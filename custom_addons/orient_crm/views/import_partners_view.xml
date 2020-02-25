@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_users_form_view_contact" model="ir.ui.view">
+        <field name="name">res.users.form.view</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[3]/group/field[@name='partner_id']" position="after">
+                <field name="team_leader_id"/>
+            </xpath>
+            <xpath expr="//field[@name='action_id']" position="after">
+                <field name="user_city"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_user_city_tree" model="ir.ui.view">
+        <field name="name">res.user.city.tree</field>
+        <field name="model">res.user.city</field>
+        <field name="arch" type="xml">
+            <tree string="User city">
+                <field name="name" string="User city"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_user_city_form" model="ir.ui.view">
+        <field name="name">res.user.city.form</field>
+        <field name="model">res.user.city</field>
+        <field name="arch" type="xml">
+            <form string="User city">
+                <sheet>
+                    <group>
+                        <field name="name" string="User city"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record model="res.groups" id="group_no_one"/> -->
+    <record id="action_res_user_city" model="ir.actions.act_window">
+        <field name="name">User City</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.user.city</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_user_city_tree"/>
+        <!-- <field name="search_view_id" ref="view_users_search"/> -->
+        <field name="context">{}</field>
+        <field name="help">Create and manage user's city.</field>
+    </record>
+
+    <record id="action_res_user_city_view1" model="ir.actions.act_window.view">
+        <field eval="10" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_user_city_tree"/>
+        <field name="act_window_id" ref="action_res_user_city"/>
+    </record>
+    <record id="action_res_user_city_view2" model="ir.actions.act_window.view">
+        <field eval="20" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_user_city_form"/>
+        <field name="act_window_id" ref="action_res_user_city"/>
+    </record>
+    <menuitem action="action_res_user_city" id="menu_action_res_user_city" parent="base.menu_custom" sequence="30"/>
+
+    <record id="import_partners_form" model="ir.ui.view">
+        <field name="name">import.partners.form</field>
+        <field name="model">import.partners</field>
+        <!-- <field name="priority" eval="8"/> -->
+        <field name="arch" type="xml">
+            <form string="Import Partners">
+                <!-- <header>
+                    <button string="Import" class="btn-primary" type="object" states='draft' name="import_salary" style="background-color:lightgreen;"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header> -->
+                <sheet>
+                    <group>
+                        <field name="datas" filename="datas_fname" string="File"/>
+                        <field name="file_url" invisible="1"/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="db_datas" invisible="1"/>
+                    </group>
+                    <button string="Import " class="btn-primary" type="object" 
+                                    name="import_partners" style="background-color:blue"/>
+                    <!-- attrs="{'invisible':[('imported','=',True)]}"/> -->
+                    <group colspan="2" col="2">
+                        <field name="partner_ids" nolabel="1">
+                            <tree create="false" delete="false">
+                                <field name="name" invisible="0"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    
+
+    <record id="action_import_partners" model="ir.actions.act_window">
+        <field name="name">Import Partners</field>
+        <field name="res_model">import.partners</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Import Partners
+            </p>
+        </field>
+        <field name="context">{'create':0,'delete': 0,'edit':1}</field>
+    </record>
+
+    <!-- <record id="contacts.action_contacts1" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">[('is_company','=',True)]</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to add a contact in your contacts directory.
+          </p><p>
+            Odoo helps you easily track all activities related to
+            a customer: discussions, history of business opportunities,
+            documents, etc.
+          </p>
+        </field>
+    </record> -->
+
+
+    <menuitem name="Import Customers"
+              id="import_partners_id"
+              parent="contacts.menu_contacts"
+              action="action_import_partners" 
+              sequence="3"
+    />
+
+    <!-- Ankit commented below -->
+
+    <menuitem name="Pending Delete Approvals"
+              id="delete_approval_id"
+              parent="contacts.menu_contacts"
+              action="action_approve_request" 
+              sequence="3"
+              groups="orient_crm.group_manage_contacts"
+    />
+
+    <!-- Ankit commented below -->
+    <act_window
+        id="crm.action_partner_merge"
+        res_model="base.partner.merge.automatic.wizard"
+        binding_model="res.partner"
+        target="new"
+        view_mode="form"
+        name="Merge Selected Contacts"
+        groups="orient_crm.group_contact_merge_contacts"/>
+
+    <!-- File Path Configuration for Import Data -->
+    <record id="import_folder_path_tree" model="ir.ui.view">
+        <field name="name">import.config.tree</field>
+        <field name="model">import.config</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Folder Path Configuration">
+                <field name="source_path"/>
+                <field name="destination_path"/>
+                <field name="failed_path"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="import_folder_path_form" model="ir.ui.view">
+        <field name="name">import.config.form</field>
+        <field name="model">import.config</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="source_path"/>
+                            <field name="destination_path"/>
+                            <field name="failed_path"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="view_import_folder_path">
+        <field name="name">Import Folder Configuration</field>
+        <field name="res_model">import.config</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Import Folder Configuration
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_import_config" name="Import Folder Configuration" parent="contacts.res_partner_menu_config" sequence="5" action="view_import_folder_path"/>
+
+    <record id="calendar_event_form_view_inherit" model="ir.ui.view">
+        <field name="name">calendar.event.inherit</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//div//h1//field[@name='name']" position="after">
+                <field name="is_presales"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
